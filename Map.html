@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibG1nbHVrYXMiLCJhIjoiY2o3N202Yno4MjF5NDMzbnVrbTM3dHU5ZSJ9.emFcp8SJ_-8h-PfM24gPvg';
+
+var bounds = [
+    [14.9765, 51.14045], // Southwest coordinates
+    [14.9845, 51.14345]  // Northeast coordinates
+];
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/outdoors-v10', //stylesheet location
+    center: [14.984, 51.1419], // starting position
+    zoom: 17, // starting zoom
+	maxBounds: bounds
+});
+
+map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl());
+
+</script>
+
+</body>
+</html>
