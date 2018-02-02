@@ -1,3 +1,5 @@
+//Copyright 2018, Lukas Müller, All rights reserved.
+
 function placeMarkerFromDatabase(id, name, date, bent, typ, save, location, markerIcon) {
 	  
 	var containsID = false;
