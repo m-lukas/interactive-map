@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Interaktive Schilder-Karte</title>
+    <style>
+      #map {
+        height: 80%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+	<div id="form" style="display: none;">
+      <table>
+      <tr><td>Name:</td> <td><input type='text' id='name'/> </td> </tr>
+	  <tr><td>Gebogen:</td> <td><select id='gebogen'> +
+				 <option value='Schild ist gebogen'>Schild ist gebogen.</option>
+				 <option value='Schild ist nicht gebogen' SELECTED>Schild ist nicht gebogen.</option>
+                 </select> </td></tr>
+      <tr><td>Typ:</td> <td><select id='typ'> +
+				 <option value='B1 - Service- und Informationsschild (A3 quer)'>B1 - Service- und Informationsschild (A3 quer)</option>
+				 <option value='B2 - Service- und Informationsschild (A3 hoch)'>B2 - Service- und Informationsschild (A3 hoch)</option>
+				 <option value='B3 - Service- und Informationsschild (A4 quer)'>B3 - Service- und Informationsschild (A4 quer)</option>
+				 <option value='B4 - Service- und Informationsschild (A4 hoch)'>B4 - Service- und Informationsschild (A4 hoch)</option>
+				 <option value='B5 - Service- und Informationsschild (A5 quer)'>B5 - Service- und Informationsschild (A5 quer)</option>
+				 <option value='B6 - Service- und Informationsschild (A5 hoch)'>B6 - Service- und Informationsschild (A5 hoch)</option>
+				 <option value='B7 - Uebersichtstafel/Lageplan' SELECTED>B7 - Uebersichtstafel/Lageplan</option>
+				 <option value='B8 - Informationen zu spez. Patenschaften'>B8 - Informationen zu spez. Patenschaft</option>
+				 <option value='B10 - Themenschilder' SELECTED>B10 - Themenschilder</option>
+				 <option value='B11 - Rundgangsschild (Pfeilform)'>B11 - Rundgangsschild (Pfeilform) B11</option>
+				 <option value='B12 - Werbung/Plakat'>B12 - Werbung/Plakat</option>
+				 <option value='S1 - Sachschild (Tier/Pflanze/Objekte)'>S1 - Sachschild (Tier/Pflanze/Objekte)</option>
+				 <option value='S2 - Sachschilder (klein)'>S2 - Sachschilder (klein)</option>
+				 <option value='P1 - Sondertafel/Spiele' SELECTED>P1 - Sondertafel/Spiele</option>
+				 <option value='W - Wegweiser' SELECTED>W - Wegweiser</option>
+				 <option value='U - ungenormtes Schild' SELECTED>U - ungenormtes Schild</option>
+				 <option value='U/P1 - ungenormte Sondertafel' SELECTED>U/P1 - ungenormte Sondertafel</option>
+                 </select> </td></tr>
+	  <tr><td>Speicherort:</td> <td><input type='text' id='save'/> </td> </tr>
+                 <tr><td></td><td><input type='button' value='Speichern' onclick='saveData()'/></td></tr>
+      </table>
+    </div>
+	<script type='text/javascript' src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key= <Google API Key> "></script>
+	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+	<script src="markerManagement.js"></script>
+    <script>
+	
+		//Copyright 2018, Lukas Müller, All rights reserved.
+
+		var map;
+		var infowindow;
+		var infowindowContent;
+		var messagewindow;
+		var database;
+		var LatLng;
+		var overlay;
+		var lastID;
+		var signList;
+		var table;
+		var clickedMarker;
+		var lastOverviewWindow;
+		USGSOverlay.prototype = new google.maps.OverlayView();
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 18,
+          center: {lat: 51.141929, lng: 14.980407}
+        });
+
+        var bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(51.140760, 14.978550),
+            new google.maps.LatLng(51.143140, 14.982280));
+
+        var srcImage = 'Map-Image/TP-Map.png';
+
+        overlay = new USGSOverlay(bounds, srcImage, map);
+		
+		infowindowContent = document.getElementById('form');
+			
+			infowindow = new google.maps.InfoWindow({
+				content: infowindowContent,
+				position: {lat: 51.141929, lng: 14.980407}
+			});
+			
+			google.maps.event.addListener(map, 'click', function(event) {
+			
+				var location = event.latLng;
+				
+				LatLng = location;
+				
+				infowindowContent.style.display='block';
+				infowindow.open(map);
+				infowindow.setPosition(location);
+			});
+			
+			//Firebase Configuration
+			
+			var config = {
+				apiKey: "<Google API Key>",
+				authDomain: "<Firebase Project Domain>",
+				databaseURL: "<Firebase Database URL>",
+				projectId: "<Firebase Project ID>",
+				storageBucket: "",
+				messagingSenderId: "<Firebase Messaging ID>"
+			};
+			
+			lastID = 0;
+			signList = new Array();
+			
+			firebase.initializeApp(config);
+			
+			// Get a reference to the database service
+			database = firebase.database();
+			
+			//markerManagement.js
+			loadData();
+			
+			$(document).ready(function() {
+				table = $('#example').DataTable();
+			 
+				$('#example tbody').on( 'click', 'tr', function () {
+					if ( $(this).hasClass('selected') ) {
+						$(this).removeClass('selected');
+					}
+					else {
+						table.$('tr.selected').removeClass('selected');
+						$(this).addClass('selected');
+						var rowID = table.row('.selected').data()[0];
+						
+						console.log('' + rowID);
+						
+						var arrayLength = signList.length;
+						for (var i = 0; i < arrayLength; i++) {
+							console.log('I ' + i);
+							if(signList[i].id === rowID){
+								clickedMarker = signList[i];
+								var overviewwindow = new google.maps.InfoWindow({
+									content: '<p><b><font size="4">Name: </font></b>' + signList[i].get('name') + '</p>' + '<p><b><font size="4">Aenderungsdatum: </font></b>' + signList[i].get('date') + '</p>' + '<p><b><font size="4">Eigenschaft: </font></b>' + signList[i].get('bent') + '</p>' + '<p><b><font size="4">Kategorie: </font></b>' + signList[i].get('typ') + '</p>' + '<p><b><font size="4">Speicherort: </font></b>' + signList[i].get('save') + '</p>' + '<button onclick="deleteData(clickedMarker)">Makierung und Eintrag löschen</button>',
+									position: signList[i].location
+								});
+								if(lastOverviewWindow != null){
+									lastOverviewWindow.close(map);
+								}
+								lastOverviewWindow = overviewwindow;
+								overviewwindow.open(map, signList[i]);
+							}
+						}
+					}
+					
+					/*$('#deleteButton').click( function () {
+						var rowID = table.row('.selected').data()[0]
+						table.row('.selected').remove().draw( false );
+						deleteData(rowID);
+					} );*/
+					
+				} );
+			} );
+		
+      }
+	  
+	  function USGSOverlay(bounds, image, Map_) {
+	  
+		//Source: https://developers.google.com/maps/documentation/javascript/examples/overlay-simple?hl=de
+
+        // Initialize all properties.
+		
+		this.bounds_ = bounds;
+		this.image_ = image;
+		this.map_ = Map_;
+
+        // Define a property to hold the image's div. We'll
+        // actually create this div upon receipt of the onAdd()
+        // method so we'll leave it null for now.
+		
+		this.div_ = null;
+
+        // Explicitly call setMap on this overlay.
+	
+		this.setMap(Map_);
+	  }
+
+      /**
+       * onAdd is called when the map's panes are ready and the overlay has been
+       * added to the map.
+       */
+	   
+	  USGSOverlay.prototype.onAdd = function() {
+	
+			//Source: https://developers.google.com/maps/documentation/javascript/examples/overlay-simple?hl=de
+
+			var div = document.createElement('div');
+			div.style.borderStyle = 'none';
+			div.style.borderWidth = '0px';
+			div.style.position = 'absolute';
+
+			// Create the img element and attach it to the div.
+		
+			var img = document.createElement('img');
+			img.src = this.image_;
+			img.style.width = '100%';
+			img.style.height = '100%';
+			img.style.position = 'absolute';
+			div.appendChild(img);
+
+			this.div_ = div;
+
+			// Add the element to the "overlayLayer" pane.
+		
+			var panes = this.getPanes();
+			panes.overlayLayer.appendChild(div);
+		
+	  };
+
+	  USGSOverlay.prototype.draw = function() {
+	
+			//Source: https://developers.google.com/maps/documentation/javascript/examples/overlay-simple?hl=de
+
+			// We use the south-west and north-east
+			// coordinates of the overlay to peg it to the correct position and size.
+			// To do this, we need to retrieve the projection from the overlay.
+		
+			var overlayProjection = this.getProjection();
+
+			// Retrieve the south-west and north-east coordinates of this overlay
+			// in LatLngs and convert them to pixel coordinates.
+			// We'll use these coordinates to resize the div.
+		
+			var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
+			var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
+
+			// Resize the image's div to fit the indicated dimensions.
+		
+			var div = this.div_;
+			div.style.left = sw.x + 'px';
+			div.style.top = ne.y + 'px';
+			div.style.width = (ne.x - sw.x) + 'px';
+			div.style.height = (sw.y - ne.y) + 'px';
+	  };
+
+      // The onRemove() method will be called automatically from the API if
+      // we ever set the overlay's map property to 'null'.
+	  
+	  USGSOverlay.prototype.onRemove = function() {
+	
+			//Source: https://developers.google.com/maps/documentation/javascript/examples/overlay-simple?hl=de
+	
+			this.div_.parentNode.removeChild(this.div_);
+			this.div_ = null;
+	
+	  };
+	  
+      google.maps.event.addDomListener(window, 'load', initMap);
+	  
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+	<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+				<th>Schild-ID</th>
+                <th>Name</th>
+                <th>Ist es gebogen?</th>
+                <th>Typ des Schildes</th>
+				<th>Speicherort</th>
+                <th>Änderungsdatum</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+				<th>Schild-ID</th>
+                <th>Name</th>
+                <th>Ist es gebogen?</th>
+                <th>Typ des Schildes</th>
+				<th>Speicherort</th>
+                <th>Änderungsdatum</th>
+            </tr>
+        </tfoot>
+    </table>
+  </body>
+</html>
