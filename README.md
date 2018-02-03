@@ -10,7 +10,7 @@ An interactive map with custom overlay, marker description and data table.
 
 ## Description
 
-This is my first HTML and Javascript project and was build for [Naturschutz-Tierpark Görlitz e.V.](www.tierpark-goerlitz.de/). It was first designed as digital archiving of all signs within the zoo. After I will have finished the project, i'm going to expand it as an "easy-to-create" interactive map for any usage.
+This is my first HTML and Javascript project and was build for [Naturschutz-Tierpark Görlitz e.V.](http://www.tierpark-goerlitz.de/). It was first designed as digital archiving of all signs within the zoo. After I will have finished the project, i'm going to expand it as an "easy-to-create" interactive map for any usage.
 
 #### To try this map:
 
@@ -21,7 +21,7 @@ This is my first HTML and Javascript project and was build for [Naturschutz-Tier
    For more information, see "[Get API Key](https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en)"...
   
 2. Go to [Firebase](https://firebase.google.com/)
-#3. Login with a Google account
+3. Login with a Google account
 4. `"GO TO CONSOLE"`
 5. Create a new project
 6. Create a Firebase Realtime Database
