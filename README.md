@@ -62,7 +62,7 @@ var config = {
   - every marker has it's own settings and informations (icon, typ ...)
 #### table
   - [DataTables API](https://datatables.net/)
-    - sortable, clickable, seachable
+    - sortable, clickable, searchable
   - click a on dataset opens the info-window of the appropriated marker
   - contains the informations of all markers
 #### database
