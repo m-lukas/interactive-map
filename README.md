@@ -21,7 +21,7 @@ This is my first HTML and Javascript project and was build for [Naturschutz-Tier
    For more information, see "[Get API Key](https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en)"...
   
 2. Go to [Firebase](https://firebase.google.com/)
-3. Login with a Google account
+#3. Login with a Google account
 4. `"GO TO CONSOLE"`
 5. Create a new project
 6. Create a Firebase Realtime Database
@@ -53,19 +53,19 @@ var config = {
 9. Open the file `(sign-map.html)` and add your first marker
 
 ## Features
-### map
+#### map
   - custom overlay-picture
   - adjustable zoom-level, center-position
-### marker
+#### marker
   - add one by clicking on a certain point of the map
   - clickable (opens the info-window of this marker)
   - every marker has it's own settings and informations (icon, typ ...)
-### table
+#### table
   - [DataTables API](https://datatables.net/)
     - sortable, clickable, seachable
   - click a on dataset opens the info-window of the appropriated marker
   - contains the informations of all markers
-### database
+#### database
   - [Firebase Realtime Database](https://firebase.google.com/products/realtime-database/)
   
 ## Todo-List
