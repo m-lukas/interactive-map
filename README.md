@@ -57,14 +57,14 @@ var config = {
   - custom overlay-picture
   - adjustable zoom-level, center-position
 #### marker
-  - add one by clicking on a certain point of the map
+  - add one by clicking on the map
   - clickable (opens the info-window of this marker)
   - every marker has it's own settings and informations (icon, typ ...)
 #### table
   - [DataTables API](https://datatables.net/)
     - sortable, clickable, searchable
-  - click a on dataset opens the info-window of the appropriated marker
-  - contains the informations of all markers
+  - click on dataset opens the info-window of the appropriated marker
+  - contains the information of all markers
 #### database
   - [Firebase Realtime Database](https://firebase.google.com/products/realtime-database/)
   
