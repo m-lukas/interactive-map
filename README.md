@@ -1,4 +1,4 @@
-# InteractiveTPMap
+# Interactive-Map
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![under development](https://img.shields.io/badge/currently-under%20development-brightgreen.svg)](https://github.com/m-lukas/InteractiveTPMap)
 
 An interactive map with custom overlay, marker description and data table.
