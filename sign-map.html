@@ -15,34 +15,34 @@
       }
     </style>
 	<div id="form" style="display: none;">
-      <table>
-      <tr><td>Name:</td> <td><input type='text' id='name'/> </td> </tr>
-	  <tr><td>Gebogen:</td> <td><select id='gebogen'> +
-				 <option value='Schild ist gebogen'>Schild ist gebogen.</option>
-				 <option value='Schild ist nicht gebogen' SELECTED>Schild ist nicht gebogen.</option>
-                 </select> </td></tr>
-      <tr><td>Typ:</td> <td><select id='typ'> +
-				 <option value='B1 - Service- und Informationsschild (A3 quer)'>B1 - Service- und Informationsschild (A3 quer)</option>
-				 <option value='B2 - Service- und Informationsschild (A3 hoch)'>B2 - Service- und Informationsschild (A3 hoch)</option>
-				 <option value='B3 - Service- und Informationsschild (A4 quer)'>B3 - Service- und Informationsschild (A4 quer)</option>
-				 <option value='B4 - Service- und Informationsschild (A4 hoch)'>B4 - Service- und Informationsschild (A4 hoch)</option>
-				 <option value='B5 - Service- und Informationsschild (A5 quer)'>B5 - Service- und Informationsschild (A5 quer)</option>
-				 <option value='B6 - Service- und Informationsschild (A5 hoch)'>B6 - Service- und Informationsschild (A5 hoch)</option>
-				 <option value='B7 - Uebersichtstafel/Lageplan' SELECTED>B7 - Uebersichtstafel/Lageplan</option>
-				 <option value='B8 - Informationen zu spez. Patenschaften'>B8 - Informationen zu spez. Patenschaft</option>
-				 <option value='B10 - Themenschilder' SELECTED>B10 - Themenschilder</option>
-				 <option value='B11 - Rundgangsschild (Pfeilform)'>B11 - Rundgangsschild (Pfeilform) B11</option>
-				 <option value='B12 - Werbung/Plakat'>B12 - Werbung/Plakat</option>
-				 <option value='S1 - Sachschild (Tier/Pflanze/Objekte)'>S1 - Sachschild (Tier/Pflanze/Objekte)</option>
-				 <option value='S2 - Sachschilder (klein)'>S2 - Sachschilder (klein)</option>
-				 <option value='P1 - Sondertafel/Spiele' SELECTED>P1 - Sondertafel/Spiele</option>
-				 <option value='W - Wegweiser' SELECTED>W - Wegweiser</option>
-				 <option value='U - ungenormtes Schild' SELECTED>U - ungenormtes Schild</option>
-				 <option value='U/P1 - ungenormte Sondertafel' SELECTED>U/P1 - ungenormte Sondertafel</option>
-                 </select> </td></tr>
-	  <tr><td>Speicherort:</td> <td><input type='text' id='save'/> </td> </tr>
-                 <tr><td></td><td><input type='button' value='Speichern' onclick='saveData()'/></td></tr>
-      </table>
+		<table>
+			<tr><td>Name:</td> <td><input type='text' id='name'/> </td> </tr>
+			<tr><td>Gebogen:</td> <td><select id='gebogen'> +
+				<option value='Schild ist gebogen'>Schild ist gebogen.</option>
+				<option value='Schild ist nicht gebogen' SELECTED>Schild ist nicht gebogen.</option>
+				</select> </td></tr>
+			<tr><td>Typ:</td> <td><select id='typ'> +
+				<option value='B1 - Service- und Informationsschild (A3 quer)'>B1 - Service- und Informationsschild (A3 quer)</option>
+				<option value='B2 - Service- und Informationsschild (A3 hoch)'>B2 - Service- und Informationsschild (A3 hoch)</option>
+				<option value='B3 - Service- und Informationsschild (A4 quer)'>B3 - Service- und Informationsschild (A4 quer)</option>
+				<option value='B4 - Service- und Informationsschild (A4 hoch)'>B4 - Service- und Informationsschild (A4 hoch)</option>
+				<option value='B5 - Service- und Informationsschild (A5 quer)'>B5 - Service- und Informationsschild (A5 quer)</option>
+				<option value='B6 - Service- und Informationsschild (A5 hoch)'>B6 - Service- und Informationsschild (A5 hoch)</option>
+				<option value='B7 - Uebersichtstafel/Lageplan' SELECTED>B7 - Uebersichtstafel/Lageplan</option>
+				<option value='B8 - Informationen zu spez. Patenschaften'>B8 - Informationen zu spez. Patenschaft</option>
+				<option value='B10 - Themenschilder' SELECTED>B10 - Themenschilder</option>
+				<option value='B11 - Rundgangsschild (Pfeilform)'>B11 - Rundgangsschild (Pfeilform) B11</option>
+				<option value='B12 - Werbung/Plakat'>B12 - Werbung/Plakat</option>
+				<option value='S1 - Sachschild (Tier/Pflanze/Objekte)'>S1 - Sachschild (Tier/Pflanze/Objekte)</option>
+				<option value='S2 - Sachschilder (klein)'>S2 - Sachschilder (klein)</option>
+				<option value='P1 - Sondertafel/Spiele' SELECTED>P1 - Sondertafel/Spiele</option>
+				<option value='W - Wegweiser' SELECTED>W - Wegweiser</option>
+				<option value='U - ungenormtes Schild' SELECTED>U - ungenormtes Schild</option>
+				<option value='U/P1 - ungenormte Sondertafel' SELECTED>U/P1 - ungenormte Sondertafel</option>
+				</select> </td></tr>
+			<tr><td>Speicherort:</td> <td><input type='text' id='save'/> </td> </tr>
+			<tr><td></td><td><input type='button' value='Speichern' onclick='saveData()'/></td></tr>
+		</table>
     </div>
 	<script type='text/javascript' src="https://code.jquery.com/jquery-3.2.1.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
