@@ -4,6 +4,7 @@ var Sign = function(id, name, bent, type, dirPath, changeDate, coordinats, color
     this.bent = bent;
     this.type = type;
     this.dirPath = dirPath;
+    this.changeDate = changeDate;
     this.coordinats = coordinats;
     this.color = color;
     
@@ -36,6 +37,13 @@ var Sign = function(id, name, bent, type, dirPath, changeDate, coordinats, color
     }
     this.setPath = (value) => {
         this.path = value;
+        //update marker by id
+    }
+    this.getDate = () => {
+        return this.changeDate;
+    }
+    this.setDate = (value) => {
+        this.changeDate = value;
         //update marker by id
     }
     this.getCoordinates = () => {
@@ -117,7 +125,7 @@ var Sign = function(id, name, bent, type, dirPath, changeDate, coordinats, color
 function loadSigns(){
     //id, name, bent, type, dirPath, changeDate, coordinats, color
     var signRef = database.ref("signs");
-	signRef.orderByValue().on("value", function(snapshot) {
+	signRef.orderByValue().once("value", function(snapshot) {
 		snapshot.forEach(function(data) {
             var name = data.val().name;
             var bent = data.val().gebogen;
@@ -184,15 +192,77 @@ function loadSigns(){
             }
 			
 			var id = data.key;
-			if(IDs.contains(id)){
-                id = Math.max.apply(null, IDs)+1;
+			if(main.IDs.contains(id)){
+                id = Math.max.apply(null, main.IDs)+1;
             }
-            IDs.push(id);
+            main.IDs.push(id);
             
             var sign = new Sign(id, name, bent, type, dirPath, changeDate, coordinats, color);
+            main.signs.push(sign);
 
-			//placeMarkerFromDatabase(id, data.val().name, data.val().date, data.val().gebogen, category, data.val().save, {lat: data.val().lat, lng: data.val().lng}, markerIcon_);
+            placeMarker(sign);
+            //insertRow(sign);
+
 		});
 	});
+}
 
+function placeMarker(sign){
+   		
+    var marker = new google.maps.Marker({
+        icon: sign.getIcon(),
+        position: sign.getCoordinates(),
+        map: main.map,
+                
+        id: '',
+        name: '',
+        date: '',
+        bent: '',
+        save: '',
+        type: ''
+    });
+            
+    marker.set('id', sign.getID());
+    marker.set('name', sign.getName());
+    marker.set('date', sign.getDate());
+    marker.set('bent', sign.isBent());
+    marker.set('typ', sign.getType());
+    marker.set('save', sign.getPath());
+    
+    /*
+    var idOfMarker = marker.get(id);
+            
+    var overviewwindow = new google.maps.InfoWindow({
+        content: '<p><b><font size="4">Name: </font></b>' + marker.get('name') + '</p>' + '<p><b><font size="4">Aenderungsdatum: </font></b>' + marker.get('date') + '</p>' + '<p><b><font size="4">Eigenschaft: </font></b>' + marker.get('bent') + '</p>' + '<p><b><font size="4">Kategorie: </font></b>' + marker.get('typ') + '</p>' + '<p><b><font size="4">Speicherort: </font></b>' + marker.get('save') + '</p>' + '<button onclick="deleteData(clickedMarker)">Makierung und Eintrag löschen</button>',
+        position: location
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+        overviewwindow.open(map);
+        lastOverviewWindow = overviewwindow;
+        clickedMarker = marker;
+    } );
+            
+    signList.push(marker);
+            
+    var formatedBent = 'Nein';
+            
+    if (bent === 'Schild ist gebogen') {
+        formatedBent = 'Ja';
+    } else {
+        formatedBent = 'Nein';
+    }
+            
+    $(document).ready(function() {
+        var t = $('#example').DataTable();	 
+            t.row.add( [
+                id,
+                name,
+                formatedBent,
+                typ,
+                save,
+                date
+            ] ).draw( false );
+    } );
+    */			
 }

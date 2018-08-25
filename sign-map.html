@@ -54,20 +54,20 @@
     <script>
 	
 		//Copyright 2018, Lukas Müller, All rights reserved.
-		
-		var map;
-		var infowindow;
-		var infowindowContent;
-		var messagewindow;
-		var database;
-		var LatLng;
-		var overlay;
-		var lastID;
-		var signList;
-		var table;
-		var clickedMarker;
-		var lastOverviewWindow;
-		var IDs = new Array();
+
+		var main = {
+			map: null,
+			infoWindow: null,
+			infoWindowContent: null,
+			messageWindow: null,
+			database: null,
+			latLng: null,
+			overlay: null,
+			table: null,
+			clickedMarker: null,
+			IDs: new Array(),
+			signs: new Array()
+		}
 		
 		function initMap() {
 			map = new google.maps.Map(document.getElementById('map'), {
